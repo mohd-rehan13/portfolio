@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #080d1a;
+  --foreground: #e8eeff;
+  --muted-foreground: #8a9cc4;
+  --border: rgba(255,255,255,0.08);
+  --card: rgba(255,255,255,0.03);
+  --accent: #4673eb;
+  --accent-light: #8daaff;
+  --primary: #4673eb;
+  --secondary: #6389f0;
+  --destructive: #ef4444;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  position: relative;
 }
+
+a, button { cursor: none !important; }
+
+/* Global grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-size: 60px 60px;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+  pointer-events: none;
+}
+
+/* Glass card utility */
+.glass {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(70,115,235,0.35);
+}
+
+/* ── Cinematic Metallic Heading Glow (Matches "Let's work together") ── */
+.heading-glow {
+  font-family: var(--font-jakarta), sans-serif;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.42) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0px 0px 24px rgba(255, 255, 255, 0.2)) drop-shadow(0px 0px 45px rgba(70, 115, 235, 0.25));
+}
+
+.heading-glow-accent {
+  font-family: var(--font-jakarta), sans-serif;
+  background: linear-gradient(180deg, #ffffff 0%, #93c5fd 60%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0px 0px 25px rgba(59, 130, 246, 0.4));
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    cursor: auto !important;
+  }
+  body::before,
+  .smoke-canvas,
+  footer,
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
