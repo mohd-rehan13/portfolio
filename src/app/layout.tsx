@@ -3,6 +3,8 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { SmokeBackground } from "@/components/ui/smoke-background";
+import { Navbar } from "@/components/ui/navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -95,9 +97,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-full flex flex-col cursor-none font-sans overflow-x-hidden w-full max-w-[100vw] relative">
-        <CustomCursor />
-        <SmokeBackground />
-        {children}
+        <ThemeProvider>
+          <Navbar />
+          <CustomCursor />
+          <SmokeBackground />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTheme } from "@/components/theme-provider";
 import OrbitDeliveryHero from "@/components/ui/orbit-delivery-hero";
 import { CinematicFooter } from "@/components/ui/motion-footer";
 import { PageTransition, InteractiveCard, ScrollProgressBar } from "@/components/ui/page-transition";
@@ -10,7 +11,7 @@ import { ProjectDetailModal, ProjectDetail } from "@/components/ui/project-detai
 import { ResumeModal } from "@/components/ui/resume-modal";
 import { ContactModal } from "@/components/ui/contact-modal";
 import { SoundToggle } from "@/components/ui/sound-toggle";
-import { playClickSound, playModalOpenSound } from "@/lib/sound-effects";
+import { playClickSound, playModalOpenSound, playQualificationSound } from "@/lib/sound-effects";
 import {
   Mail,
   MapPin,
@@ -291,51 +292,20 @@ const certStaggerItems: StaggerItem[] = [
   },
 ];
 
-const quickMetrics = [
-  { icon: <ShieldCheck className="w-5 h-5 text-blue-400" />, label: "Security Domain", value: "Network & PenTest" },
-  { icon: <Cpu className="w-5 h-5 text-cyan-400" />, label: "Core Stack", value: "Python, Flask, React" },
-  { icon: <Activity className="w-5 h-5 text-indigo-400" />, label: "Decision Models", value: "4 ML Classifiers" },
-  { icon: <Lock className="w-5 h-5 text-blue-400" />, label: "Certifications", value: "DCSC & AWS Forage" },
-];
-
 export default function Home() {
+  const { theme } = useTheme();
   const [selectedProject, setSelectedProject] = useState<ProjectDetail | null>(null);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [activeQualification, setActiveQualification] = useState(0);
 
   return (
     <>
       <ScrollProgressBar />
-      <main className="relative z-10 text-[#e8eeff] font-sans selection:bg-blue-500/20 overflow-x-hidden w-full max-w-[100vw]">
+      <main className="relative z-10 text-foreground font-sans selection:bg-blue-500/20 overflow-x-hidden w-full max-w-[100vw] transition-colors duration-300">
 
-        {/* 3D Hero Section */}
-        <OrbitDeliveryHero theme="dark" />
-
-        {/* ── Wide Interactive Metrics Banner ── */}
-        <section className="py-16 border-b border-white/5 relative z-20">
-          <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
-            <PageTransition direction="up">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {quickMetrics.map((m, idx) => (
-                  <InteractiveCard
-                    key={idx}
-                    className="glass rounded-2xl p-6 border border-white/10 hover:border-blue-400/50 hover:shadow-[0_0_35px_rgba(70,115,235,0.25)] transition-all duration-300 flex items-center gap-5"
-                  >
-                    <div className="p-3.5 rounded-2xl bg-blue-500/10 border border-blue-500/20 shrink-0 text-blue-400">
-                      {m.icon}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs uppercase tracking-widest text-[#8a9cc4] font-semibold truncate">
-                        {m.label}
-                      </p>
-                      <p className="text-base font-black text-white mt-0.5 truncate">{m.value}</p>
-                    </div>
-                  </InteractiveCard>
-                ))}
-              </div>
-            </PageTransition>
-          </div>
-        </section>
+        {/* 3D Hero Section with Dynamic Theme */}
+        <OrbitDeliveryHero theme={theme} />
 
         {/* ── About Section (Widescreen Layout with Balanced 3D Card) ──── */}
         <section id="about" className="py-28 border-b border-white/5 relative">
@@ -368,7 +338,7 @@ export default function Home() {
                     <span className="truncate">mohammadrehan1302@gmail.com</span>
                   </button>
                   <span className="glass flex items-center gap-3.5 px-5 py-4 rounded-2xl text-[#8a9cc4] text-sm md:text-base font-medium">
-                    <Phone className="w-5 h-5 text-blue-400 shrink-0" /> +91 93******63
+                    <Phone className="w-5 h-5 text-blue-400 shrink-0" /> +91 9391358563
                   </span>
                   <span className="glass flex items-center gap-3.5 px-5 py-4 rounded-2xl text-[#8a9cc4] text-sm md:text-base font-medium">
                     <MapPin className="w-5 h-5 text-blue-400 shrink-0" /> Hyderabad, India
@@ -535,7 +505,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 glass px-10 py-5 rounded-full text-[#8a9cc4] hover:text-white hover:border-blue-400/60 hover:shadow-[0_0_40px_rgba(70,115,235,0.3)] transition-all duration-300 font-bold text-base group"
                 >
-                  <Code2 className="w-5 h-5 text-blue-400 group-hover:rotate-12 transition-transform" /> View all repositories on GitHub
+                  <Code2 className="w-5 h-5 text-blue-400 group-hover:rotate-12 transition-transform" /> Visit My Work
                 </a>
               </div>
             </PageTransition>
@@ -596,20 +566,38 @@ export default function Home() {
                       years: "2020–2021",
                       grade: "GPA: 10/10",
                     },
-                  ].map(({ degree, school, years, grade, accent }) => (
-                    <div key={degree} className="relative pl-8 border-l-2 border-white/10 group">
+                  ].map(({ degree, school, years, grade, accent }, index) => (
+                    <button
+                      type="button"
+                      key={degree}
+                      onMouseEnter={() => {
+                        if (activeQualification !== index) playQualificationSound();
+                        setActiveQualification(index);
+                      }}
+                      onFocus={() => setActiveQualification(index)}
+                      onClick={() => {
+                        playQualificationSound();
+                        setActiveQualification(index);
+                      }}
+                      className={`relative block w-full pl-8 pr-4 py-1 text-left border-l-2 group transition-colors duration-300 ${activeQualification === index
+                        ? "border-blue-400/70 bg-blue-500/10 rounded-r-2xl"
+                        : "border-slate-300/40 dark:border-white/10"
+                        }`}
+                      aria-pressed={activeQualification === index}
+                    >
                       <div
-                        className={`absolute w-3.5 h-3.5 ${
-                          accent ? "bg-blue-500 shadow-[0_0_12px_rgba(70,115,235,0.9)]" : "bg-white/20"
-                        } rounded-full -left-[8px] top-2 transition-transform group-hover:scale-125`}
+                        className={`absolute w-3.5 h-3.5 rounded-full -left-[8px] top-5 transition-all duration-300 ${activeQualification === index
+                          ? "bg-blue-500 shadow-[0_0_16px_rgba(70,115,235,0.95)] scale-125"
+                          : "bg-slate-300 dark:bg-white/20 group-hover:bg-blue-300"
+                          }`}
                       />
-                      <h3 className="text-lg md:text-xl font-bold text-white group-hover:text-blue-400 transition">{degree}</h3>
-                      <p className={`text-base ${accent ? "text-blue-400 font-medium" : "text-[#8a9cc4]"} my-1.5`}>{school}</p>
-                      <div className="flex justify-between text-[#8a9cc4] text-sm mt-3">
+                      <h3 className={`qualification-title text-lg md:text-xl font-bold transition ${activeQualification === index ? "text-blue-500" : "text-slate-900 dark:text-white"}`}>{degree}</h3>
+                      <p className={`qualification-school text-base my-1.5 ${activeQualification === index ? "text-blue-500 font-medium" : "text-slate-600 dark:text-[#8a9cc4]"}`}>{school}</p>
+                      <div className="qualification-meta flex justify-between text-slate-600 dark:text-[#8a9cc4] text-sm mt-3">
                         <span>{years}</span>
-                        <span className="text-white bg-white/5 border border-white/10 px-3 py-1 rounded-lg font-medium">{grade}</span>
+                        <span className="qualification-grade text-slate-800 dark:text-white bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3 py-1 rounded-lg font-medium">{grade}</span>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -646,25 +634,26 @@ export default function Home() {
               </div>
             </PageTransition>
           </div>
-        </section>
+        </section >
 
         {/* ── Interactive Modals & Sound Controls ── */}
-        <ProjectDetailModal
+        < ProjectDetailModal
           project={selectedProject}
-          isOpen={!!selectedProject}
+          isOpen={!!selectedProject
+          }
           onClose={() => setSelectedProject(null)}
         />
-        <ResumeModal
+        < ResumeModal
           isOpen={isResumeOpen}
           onClose={() => setIsResumeOpen(false)}
         />
-        <ContactModal
+        < ContactModal
           isOpen={isContactOpen}
           onClose={() => setIsContactOpen(false)}
         />
-        <SoundToggle />
+        < SoundToggle />
 
-      </main>
+      </main >
       <CinematicFooter />
     </>
   );

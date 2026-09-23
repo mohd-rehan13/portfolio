@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 "use client";
 // @ts-nocheck Ã¢â‚¬â€ generated single-file distribution; typed sources live in the app.
 "use client";
@@ -981,7 +981,7 @@ var SceneBoundary = class extends Component {
   }
 };
 var stories = {
-  "Projects": { title: "Security & Dev Projects.", paragraphs: ["I build platforms like AI-Based Network Intrusion Detection Systems.", "Explore my work ranging from machine learning classifiers to OSINT tool collections."] },
+  "Projects": { title: "Security & Dev Projects.", paragraphs: ["I build platforms like Network Intrusion Detection Systems.", "Explore my work ranging from machine learning classifiers to OSINT tool collections."] },
   "Education": { title: "Academic Journey.", paragraphs: ["B.Tech in Computer Science & Engineering (Cybersecurity) at DRK College of Engineering and Technology.", "Graduating in 2027 with an 8.2 CGPA and a passion for network security."] },
   "About Me": { title: "Mohammad Rehan.", paragraphs: ["I'm a cybersecurity-focused student with practical experience in network security, vulnerability assessment, and web application security.", "I am seeking a Cybersecurity or SOC Analyst internship to apply hands-on security skills and contribute to real-world security operations."] }
 };
@@ -1062,17 +1062,22 @@ function App() {
     if (!reduced) nudge(1);
   };
   return <div className={`page ${prototype ? "prototype" : ""}`}>
-    <header className="site-header">
-      <a href="./" className="wordmark" aria-label="Orbit Delivery home"><svg viewBox="0 0 38 38" aria-hidden="true"><defs><radialGradient id="logo-light" cx="30%" cy="20%"><stop stopColor="#7d9efa" /><stop offset="1" stopColor="#4674e9" /></radialGradient></defs><circle cx="23" cy="15" r="14" fill="url(#logo-light)" /><circle cx="10" cy="27" r="8" fill="#6389f0" /><circle cx="15" cy="8" r="3.5" fill="#b2c7ff" opacity=".45" /></svg><span className="brand-type">rehan<small>sec</small></span></a>
-      <nav aria-label="Main navigation"><button onClick={explore}>Explore</button>{["Projects", "Education", "About Me"].map((item) => <button key={item} onClick={() => setStory(item)}>{item}</button>)}</nav>
-      <button className="header-cta">Hire Me</button>
-    </header>
     <main><section className="hero" aria-labelledby="hero-title">
       <div className="hero-copy">
         <p className="eyebrow">Available for new opportunities</p>
         <h1 id="hero-title">MOHAMMAD<br />REHAN<br /><em>Portfolio.</em></h1>
         <p className="hero-description">Cybersecurity Intern Candidate & Developer.<br className="desktop-break" /> Specializing in Network Security and Vulnerability Assessment.</p>
-        <button className="explore-button">View My Work <Arrow /></button>
+        <button
+          className="explore-button"
+          onClick={() => {
+            const el = document.getElementById("projects");
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+        >
+          View My Work <Arrow />
+        </button>
       </div>
       <div className="visual-column">
         <div
@@ -1133,7 +1138,7 @@ function App() {
       <p id="planet-instructions" className="sr-only">Drag in any direction, or use the arrow keys, to rotate the 3D planet. Space pauses the planet and lets the courier wave; press again to start. Rotation is locked while paused. On touch screens, swipe outside the planet to scroll the page.</p>
       <div className="cloud-bank" aria-hidden="true"><i /><i /><i /><i /><i /></div>
     </section></main>
-    <footer className="site-footer"><p className="footer-left">Clean code<br />Big impact</p><button className="motion-button" onClick={toggleMotion} aria-pressed={!auto} aria-label={auto ? "Pause and greet the courier" : "Start moving"}>{auto ? <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10m6-10v10" stroke="currentColor" strokeWidth="1.5" /></svg> : <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 8 6-8 6Z" fill="currentColor" /></svg>}<span>{auto ? "Pause" : "Start"}</span></button><p className="footer-right">Let's work<br />together<br />today</p></footer>
+    <footer className="site-footer" style={{ justifyContent: "center" }}><button className="motion-button" onClick={toggleMotion} aria-pressed={!auto} aria-label={auto ? "Pause and greet the courier" : "Start moving"}>{auto ? <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10m6-10v10" stroke="currentColor" strokeWidth="1.5" /></svg> : <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 8 6-8 6Z" fill="currentColor" /></svg>}<span>{auto ? "Pause" : "Start"}</span></button></footer>
     {prototype && <aside className="prototype-label">Movement prototype <a href="./">View finished scene Ã¢â€ â€”</a></aside>}
     {story && <StoryDialog story={story} onClose={() => setStory(null)} />}
   </div>;

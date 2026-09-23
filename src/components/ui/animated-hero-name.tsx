@@ -63,7 +63,7 @@ export function AnimatedHeroName() {
       >
         <span className="w-2.5 h-2.5 rounded-full bg-blue-400 shadow-[0_0_12px_rgba(96,165,250,1)] animate-pulse" />
         <p className="text-blue-400 text-xs md:text-sm font-bold tracking-[0.25em] uppercase">
-          Cybersecurity · Network Security · SOC Analyst
+          Network Security · SOC Analyst
         </p>
       </motion.div>
 

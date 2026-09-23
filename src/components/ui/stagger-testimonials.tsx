@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ExternalLink, Sparkles, FileSearch } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { playClickSound, playHoverSound, playSwipeSound } from '@/lib/sound-effects';
+import { playClickSound, playScrollSound, playSwipeSound } from '@/lib/sound-effects';
 
 const SQRT_5000 = Math.sqrt(5000);
 
@@ -33,10 +33,10 @@ interface StaggerCardProps {
   onItemClick?: (item: StaggerItem) => void;
 }
 
-const StaggerCard: React.FC<StaggerCardProps> = ({ 
-  position, 
-  item, 
-  handleMove, 
+const StaggerCard: React.FC<StaggerCardProps> = ({
+  position,
+  item,
+  handleMove,
   cardWidth,
   cardHeight,
   onItemClick,
@@ -50,8 +50,8 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
   const rotation = position * 3.8; // Left tilts negative (-), Right tilts positive (+)
   const scale = isCenter ? 1.03 : Math.max(0.76, 1 - absPos * 0.08);
   const zIndex = isCenter ? 30 : Math.max(1, 20 - absPos * 5);
-  // Center is 1, pos 1/-1 is 0.75, pos 2/-2 is 0.45, buffer positions > 2 fade smoothly to 0
-  const opacity = isCenter ? 1 : absPos > 2 ? 0 : Math.max(0.2, 0.48 - (absPos - 1) * 0.22);
+  // Center is 1, side cards remain clearly visible and high-contrast
+  const opacity = isCenter ? 1 : absPos > 2 ? 0 : Math.max(0.65, 0.88 - (absPos - 1) * 0.16);
   const pointerEvents = absPos > 2 ? "none" : "auto";
 
   return (
@@ -65,12 +65,11 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
           handleMove(position);
         }
       }}
-      onMouseEnter={() => absPos <= 2 && playHoverSound()}
       className={cn(
-        "absolute left-1/2 top-1/2 cursor-pointer p-6 sm:p-7 transition-all duration-500 ease-out select-none flex flex-col justify-between rounded-3xl group",
-        isCenter 
-          ? "bg-[#090f20] text-white border-2 border-blue-400 shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_50px_rgba(59,130,246,0.35)] ring-1 ring-blue-400/40" 
-          : "bg-[#080d1a]/25 text-[#8a9cc4] border border-white/10 backdrop-blur-sm hover:opacity-80 hover:bg-[#0c152a]/60 hover:border-blue-400/40"
+        "stagger-card absolute left-1/2 top-1/2 cursor-pointer p-6 sm:p-7 transition-all duration-500 ease-out select-none flex flex-col justify-between rounded-3xl group overflow-hidden",
+        isCenter
+          ? "stagger-card-center bg-[#090e1c] text-white border-2 border-blue-500 shadow-[0_25px_60px_rgba(0,0,0,0.4),0_0_40px_rgba(59,130,246,0.3)] ring-1 ring-blue-400/50"
+          : "bg-[#0d1527] text-slate-100 border border-slate-700/80 shadow-[0_15px_35px_rgba(0,0,0,0.25)] hover:border-blue-400/60"
       )}
       style={{
         width: cardWidth,
@@ -78,7 +77,6 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
         zIndex,
         opacity,
         pointerEvents,
-        clipPath: `polygon(30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% 100%, calc(100% - 30px) 100%, 30px 100%, 0 100%, 0 30px)`,
         transform: `
           translate(-50%, -50%) 
           translateX(${xOffset}px)
@@ -91,47 +89,8 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
         transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
       }}
     >
-      {/* ── Animated Cyber Corner Beam (Top-Right) ── */}
-      <div
-        className="absolute overflow-hidden pointer-events-none origin-top-right rotate-45"
-        style={{
-          right: -2,
-          top: 28,
-          width: SQRT_5000,
-          height: 2.5,
-        }}
-      >
-        <span
-          className={cn(
-            "block w-full h-full transition-colors duration-500",
-            isCenter ? "bg-blue-400 shadow-[0_0_12px_rgba(96,165,250,1)]" : "bg-white/10"
-          )}
-        />
-        {isCenter && (
-          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-200 to-transparent animate-[shimmer_1.5s_infinite_linear] opacity-100" />
-        )}
-      </div>
-
-      {/* ── Animated Cyber Corner Beam (Top-Left - Left Transaction Effect) ── */}
-      <div
-        className="absolute overflow-hidden pointer-events-none origin-top-left -rotate-45"
-        style={{
-          left: -2,
-          top: 28,
-          width: SQRT_5000,
-          height: 2.5,
-        }}
-      >
-        <span
-          className={cn(
-            "block w-full h-full transition-colors duration-500",
-            isCenter ? "bg-blue-400 shadow-[0_0_12px_rgba(96,165,250,1)]" : "bg-white/10"
-          )}
-        />
-        {isCenter && (
-          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-200 to-transparent animate-[shimmer_1.5s_infinite_linear] opacity-100" />
-        )}
-      </div>
+      {/* ── Top Subtle Accent Glow Strip ── */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-80" />
 
       {/* Top Header */}
       <div>
@@ -139,9 +98,9 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
           {item.icon && (
             <div className={cn(
               "p-3 rounded-2xl transition-all duration-500 shrink-0",
-              isCenter 
-                ? "bg-blue-500/20 text-blue-300 border border-blue-400/40 shadow-[0_0_18px_rgba(59,130,246,0.3)]" 
-                : "bg-white/5 text-[#8a9cc4] border border-white/10"
+              isCenter
+                ? "bg-blue-500/20 text-blue-300 border border-blue-400/40 shadow-[0_0_18px_rgba(59,130,246,0.3)]"
+                : "bg-slate-800/90 text-blue-400 border border-slate-700"
             )}>
               {item.icon}
             </div>
@@ -149,9 +108,9 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
           {item.badge && (
             <span className={cn(
               "text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full transition-all duration-500 flex items-center gap-1.5",
-              isCenter 
-                ? "bg-blue-500/20 text-blue-300 border border-blue-400/60 shadow-[0_0_12px_rgba(59,130,246,0.3)]" 
-                : "bg-white/5 text-slate-400 border border-white/10"
+              isCenter
+                ? "bg-blue-500/20 text-blue-300 border border-blue-400/60 shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+                : "bg-slate-800 text-slate-200 border border-slate-700"
             )}>
               {isCenter && <Sparkles className="w-3 h-3 text-blue-300 animate-pulse" />}
               {item.badge}
@@ -159,26 +118,20 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
           )}
         </div>
 
-        <h3 className={cn(
-          "text-lg sm:text-xl font-black tracking-tight mb-1.5 leading-snug line-clamp-2 transition-colors duration-500",
-          isCenter ? "text-white" : "text-slate-200"
-        )}>
+        <h3 className="text-lg sm:text-xl font-black tracking-tight mb-1.5 leading-snug line-clamp-2 transition-colors duration-500 text-white">
           {item.title}
         </h3>
 
         {item.subtitle && (
-          <p className={cn(
-            "text-[11px] font-bold uppercase tracking-wider mb-2.5 transition-colors duration-500",
-            isCenter ? "text-blue-400" : "text-blue-400/70"
-          )}>
+          <p className="text-[11px] font-bold uppercase tracking-wider mb-2.5 transition-colors duration-500 text-blue-400">
             {item.subtitle}
           </p>
         )}
 
         {item.description && (
           <p className={cn(
-            "text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-4 font-normal transition-colors duration-500",
-            isCenter ? "text-slate-200 font-medium" : "text-[#8a9cc4]"
+            "text-xs sm:text-sm leading-relaxed line-clamp-3 sm:line-clamp-4 transition-colors duration-500",
+            isCenter ? "text-slate-100 font-medium" : "text-slate-300 font-normal"
           )}>
             {item.description}
           </p>
@@ -188,7 +141,7 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
       {/* Footer / Tags / Link */}
       <div className={cn(
         "pt-3 border-t mt-auto transition-colors duration-500",
-        isCenter ? "border-blue-500/25" : "border-white/10"
+        isCenter ? "border-blue-500/30" : "border-slate-800"
       )}>
         {item.tags && item.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-2.5">
@@ -197,9 +150,9 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
                 key={idx}
                 className={cn(
                   "text-[10px] font-semibold px-2 py-0.5 rounded-lg transition-all duration-500",
-                  isCenter 
-                    ? "bg-blue-500/20 text-blue-200 border border-blue-400/40" 
-                    : "bg-white/5 text-slate-400 border border-white/5"
+                  isCenter
+                    ? "bg-blue-500/20 text-blue-200 border border-blue-400/40"
+                    : "bg-slate-800 text-slate-200 border border-slate-700"
                 )}
               >
                 {tag}
@@ -220,8 +173,8 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
               }}
               className={cn(
                 "inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all duration-300",
-                isCenter 
-                  ? "bg-blue-500/25 text-blue-200 hover:bg-blue-500/40 hover:text-white border border-blue-400/50 shadow-[0_0_12px_rgba(59,130,246,0.25)]" 
+                isCenter
+                  ? "bg-blue-500/25 text-blue-200 hover:bg-blue-500/40 hover:text-white border border-blue-400/50 shadow-[0_0_12px_rgba(59,130,246,0.25)]"
                   : "bg-white/5 text-slate-400 hover:text-slate-200"
               )}
             >
@@ -241,8 +194,8 @@ const StaggerCard: React.FC<StaggerCardProps> = ({
               }}
               className={cn(
                 "inline-flex items-center gap-1.5 text-[11px] font-bold transition-all duration-300",
-                isCenter 
-                  ? "text-blue-300 hover:text-white hover:translate-x-1" 
+                isCenter
+                  ? "text-blue-300 hover:text-white hover:translate-x-1"
                   : "text-slate-400 hover:text-blue-300"
               )}
             >
@@ -262,7 +215,7 @@ interface StaggerCarouselProps {
   onItemClick?: (item: StaggerItem) => void;
 }
 
-export const StaggerCarousel: React.FC<StaggerCarouselProps> = ({ 
+export const StaggerCarousel: React.FC<StaggerCarouselProps> = ({
   items,
   containerHeight = 500,
   onItemClick,
@@ -323,8 +276,10 @@ export const StaggerCarousel: React.FC<StaggerCarouselProps> = ({
     if (Math.abs(delta) > 25) {
       lastWheelTime.current = now;
       if (delta > 0) {
+        playScrollSound();
         handleMove(1);
       } else {
+        playScrollSound();
         handleMove(-1);
       }
     }
@@ -340,8 +295,10 @@ export const StaggerCarousel: React.FC<StaggerCarouselProps> = ({
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) {
       if (diff > 0) {
+        playSwipeSound();
         handleMove(1);
       } else {
+        playSwipeSound();
         handleMove(-1);
       }
     }
@@ -358,8 +315,10 @@ export const StaggerCarousel: React.FC<StaggerCarouselProps> = ({
     const diff = mouseStartX.current - e.clientX;
     if (Math.abs(diff) > 45) {
       if (diff > 0) {
+        playSwipeSound();
         handleMove(1);
       } else {
+        playSwipeSound();
         handleMove(-1);
       }
     }
@@ -418,7 +377,7 @@ export const StaggerCarousel: React.FC<StaggerCarouselProps> = ({
       })}
 
       {/* Subtle Horizontal Scroll Indicator Pill */}
-      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-white/10 text-[#8a9cc4] text-[11px] font-semibold tracking-wider uppercase pointer-events-none opacity-60 hover:opacity-100 transition-opacity">
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-white/10 text-[#8a9cc4] text-[11px] font-semibold tracking-wider uppercase pointer-events-none opacity-60 hover:opacity-100 transition-opacity">
         <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
         <span>Scroll or Swipe Horizontally</span>
       </div>
