@@ -80,16 +80,6 @@ body::before {
   display: none !important;
 }
 
-/* ── Global Seamless Transitions ── */
-*,
-*::before,
-*::after {
-  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-    background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-    border-color 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-    box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
 @keyframes textMorphPulse {
   0% {
     filter: blur(1.2px) brightness(1.15);
@@ -116,6 +106,16 @@ body::before {
 .theme-morphing a,
 .theme-morphing button {
   animation: textMorphPulse 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* ── Global Seamless Transitions ── */
+*,
+*::before,
+*::after {
+  transition: color 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* ── Glass & Component Cards ── */

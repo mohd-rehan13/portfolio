@@ -104,7 +104,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
       {/* Modal Dialog */}
       <div className="relative z-10 w-full max-w-2xl bg-[#080d1a] border border-blue-500/35 rounded-3xl shadow-[0_25px_80px_rgba(0,0,0,0.95),0_0_50px_rgba(59,130,246,0.3)] overflow-hidden flex flex-col max-h-[92vh] my-auto animate-in fade-in zoom-in-95 duration-200">
-        
+
         {/* Top Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.02]">
           <div className="flex items-center gap-3">
@@ -125,7 +125,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
         {/* Modal Body */}
         <div className="p-6 sm:p-8 overflow-y-auto space-y-6">
-          
+
           {/* Recipient Pill */}
           <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
@@ -228,6 +228,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => playClickSound()}
+                data-cursor-minimal
                 className="flex items-center justify-between p-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white text-xs font-bold transition-all group"
               >
                 <span>Open in Outlook Web</span>
@@ -237,6 +238,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
               <a
                 href={mailtoUrl}
                 onClick={() => playClickSound()}
+                data-cursor-minimal
                 className="flex items-center justify-between p-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white text-xs font-bold transition-all group"
               >
                 <span>Open Desktop Mail Client</span>

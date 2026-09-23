@@ -8,7 +8,6 @@ export function CustomCursor() {
   const blobRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<CursorMode>("default");
-  const [label, setLabel] = useState("");
   const [isClicking, setIsClicking] = useState(false);
 
   useEffect(() => {
@@ -71,25 +70,19 @@ export function CustomCursor() {
 
       if (target.closest("a") || target.tagName === "A") {
         setMode("link");
-        setLabel("View ↗");
       } else if (target.closest("button") || target.tagName === "BUTTON") {
         setMode("button");
-        setLabel("Select");
       } else if (target.closest("[data-tilt]") || target.closest(".glass")) {
         setMode("card");
-        setLabel("");
       } else if (["H1", "H2", "H3", "P", "SPAN"].includes(target.tagName)) {
         setMode("text");
-        setLabel("");
       } else {
         setMode("default");
-        setLabel("");
       }
     };
 
     const handleMouseOut = () => {
       setMode("default");
-      setLabel("");
     };
 
     document.addEventListener("mouseover", handleMouseOver);
@@ -112,11 +105,10 @@ export function CustomCursor() {
     }
     switch (mode) {
       case "link":
-        return "w-16 h-16 rounded-3xl bg-blue-500/20 border border-blue-400 backdrop-blur-sm shadow-[0_0_25px_rgba(59,130,246,0.6)]";
       case "button":
-        return "w-14 h-14 rounded-2xl bg-cyan-400/20 border border-cyan-300 backdrop-blur-sm shadow-[0_0_25px_rgba(34,211,238,0.6)]";
+        return "w-9 h-9 rounded-full border border-blue-400/60 bg-blue-500/10 shadow-[0_0_15px_rgba(59,130,246,0.3)]";
       case "text":
-        return "w-20 h-20 rounded-full border border-white/30 bg-white/5 backdrop-blur-[2px]";
+        return "w-20 h-20 rounded-full border border-white/30 bg-white/5";
       case "card":
         return "w-12 h-12 rounded-2xl border border-blue-400/50 bg-blue-500/10";
       default:
@@ -138,13 +130,7 @@ export function CustomCursor() {
         ref={blobRef}
         className={`pointer-events-none fixed top-0 left-0 z-[10000] flex items-center justify-center transition-all duration-300 ease-out ${getMorphStyles()}`}
         style={{ willChange: "transform" }}
-      >
-        {label && (
-          <span className="text-[10px] font-black uppercase tracking-widest text-cyan-200 pointer-events-none select-none">
-            {label}
-          </span>
-        )}
-      </div>
+      />
     </>
   );
 }

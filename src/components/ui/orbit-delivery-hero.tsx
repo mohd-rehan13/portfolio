@@ -794,12 +794,12 @@ var init_PrototypeScene = __esm({
 
 // src/renderQuality.ts
 function chooseRenderQuality() {
-  if (typeof navigator === "undefined") return "low";
+  if (typeof window === "undefined" || typeof navigator === "undefined") return "low";
   const device = navigator;
-  const preference = new URLSearchParams(location.search).get("quality");
+  const preference = new URLSearchParams(window.location.search).get("quality");
   if (preference === "high") return "high";
   if (preference === "low") return "low";
-  const mobile = matchMedia("(pointer: coarse)").matches && Math.min(screen.width, screen.height) < 900;
+  const mobile = window.matchMedia("(pointer: coarse)").matches && Math.min(window.screen.width, window.screen.height) < 900;
   const limited = (device.hardwareConcurrency || 4) <= 4 || device.deviceMemory !== void 0 && device.deviceMemory <= 4;
   const slowConnection = device.connection?.saveData || /(^|-)2g$/.test(device.connection?.effectiveType || "");
   return mobile || limited || slowConnection ? "low" : "high";
@@ -1081,55 +1081,55 @@ function App() {
       </div>
       <div className="visual-column">
         <div
-    ref={interaction}
-    id="planet"
-    className={`planet-stage ${dragging ? "dragging" : ""}`}
-    tabIndex={0}
-    role="group"
-    aria-roledescription="interactive 3D planet"
-    aria-label="Rotate the planet"
-    aria-describedby="planet-instructions"
-    onPointerDown={(event) => {
-      if (!auto || !event.isPrimary || event.button !== 0) return;
-      event.currentTarget.setPointerCapture(event.pointerId);
-      drag.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
-      const m = motion.current;
-      m.dragTarget = m.planetAngle;
-      m.pitchTarget = m.pitchAngle;
-      m.dragging = true;
-      m.lastInteraction = m.time;
-      setDragging(true);
-    }}
-    onPointerMove={(event) => {
-      if (!auto || drag.current?.id !== event.pointerId) return;
-      const dx = event.clientX - drag.current.x, dy = event.clientY - drag.current.y;
-      const sensitivity = 5 / Math.max(360, event.currentTarget.clientWidth);
-      const m = motion.current;
-      m.dragTarget = Math.max(m.planetAngle - 0.5, Math.min(m.planetAngle + 0.5, m.dragTarget + dx * sensitivity));
-      m.pitchTarget = Math.max(m.pitchAngle - 0.4, Math.min(m.pitchAngle + 0.4, m.pitchTarget + dy * sensitivity * 0.7));
-      drag.current.x = event.clientX;
-      drag.current.y = event.clientY;
-      m.lastInteraction = m.time;
-    }}
-    onPointerUp={(event) => release(event.pointerId)}
-    onPointerCancel={(event) => release(event.pointerId)}
-    onLostPointerCapture={(event) => release(event.pointerId)}
-    onKeyDown={(event) => {
-      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-        event.preventDefault();
-        nudge(event.key === "ArrowRight" ? 1 : -1);
-      }
-      if (auto && (event.key === "ArrowUp" || event.key === "ArrowDown")) {
-        event.preventDefault();
-        motion.current.pitchVelocity += event.key === "ArrowDown" ? 0.4 : -0.4;
-        motion.current.lastInteraction = motion.current.time;
-      }
-      if (event.key === " ") {
-        event.preventDefault();
-        if (!event.repeat) toggleMotion();
-      }
-    }}
-  >
+          ref={interaction}
+          id="planet"
+          className={`planet-stage ${dragging ? "dragging" : ""}`}
+          tabIndex={0}
+          role="group"
+          aria-roledescription="interactive 3D planet"
+          aria-label="Rotate the planet"
+          aria-describedby="planet-instructions"
+          onPointerDown={(event) => {
+            if (!auto || !event.isPrimary || event.button !== 0) return;
+            event.currentTarget.setPointerCapture(event.pointerId);
+            drag.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+            const m = motion.current;
+            m.dragTarget = m.planetAngle;
+            m.pitchTarget = m.pitchAngle;
+            m.dragging = true;
+            m.lastInteraction = m.time;
+            setDragging(true);
+          }}
+          onPointerMove={(event) => {
+            if (!auto || drag.current?.id !== event.pointerId) return;
+            const dx = event.clientX - drag.current.x, dy = event.clientY - drag.current.y;
+            const sensitivity = 5 / Math.max(360, event.currentTarget.clientWidth);
+            const m = motion.current;
+            m.dragTarget = Math.max(m.planetAngle - 0.5, Math.min(m.planetAngle + 0.5, m.dragTarget + dx * sensitivity));
+            m.pitchTarget = Math.max(m.pitchAngle - 0.4, Math.min(m.pitchAngle + 0.4, m.pitchTarget + dy * sensitivity * 0.7));
+            drag.current.x = event.clientX;
+            drag.current.y = event.clientY;
+            m.lastInteraction = m.time;
+          }}
+          onPointerUp={(event) => release(event.pointerId)}
+          onPointerCancel={(event) => release(event.pointerId)}
+          onLostPointerCapture={(event) => release(event.pointerId)}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+              event.preventDefault();
+              nudge(event.key === "ArrowRight" ? 1 : -1);
+            }
+            if (auto && (event.key === "ArrowUp" || event.key === "ArrowDown")) {
+              event.preventDefault();
+              motion.current.pitchVelocity += event.key === "ArrowDown" ? 0.4 : -0.4;
+              motion.current.lastInteraction = motion.current.time;
+            }
+            if (event.key === " ") {
+              event.preventDefault();
+              if (!event.repeat) toggleMotion();
+            }
+          }}
+        >
           {sceneMounted && <SceneBoundary><Suspense fallback={null}><PlanetScene3 motion={motion} active={visible && tabVisible && !story} auto={auto} reduced={reduced} prototype={prototype} onReady={setReady} /></Suspense></SceneBoundary>}
           {!ready && <div className="loading" role="status"><span />Your little world is taking shapeÃ¢â‚¬Â¦</div>}
         </div>

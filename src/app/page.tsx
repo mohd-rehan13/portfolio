@@ -397,42 +397,23 @@ export default function Home() {
                   className="glass rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(70,115,235,0.22)] hover:border-blue-400/60"
                   glowColor="rgba(140, 190, 255, 0.35)"
                 >
-                  <div className="relative w-full aspect-[4/3.8] overflow-hidden">
+                  <div className={`relative w-full aspect-[4/3.8] overflow-hidden ${theme === "dark" ? "bg-[#080d1a]" : "bg-slate-100"}`}>
                     <Image
-                      src="/profile.jpg"
+                      src="/pngg.jpeg"
                       alt="Mohammad Rehan"
                       fill
                       className="object-cover object-top hover:scale-105 transition-transform duration-700"
                       priority
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#080d1a] via-[#080d1a]/25 to-transparent" />
+                    <div className={`absolute inset-0 ${theme === "dark" ? "bg-gradient-to-t from-[#080d1a]/80 via-transparent to-transparent" : "bg-gradient-to-t from-white/70 via-transparent to-transparent"}`} />
                   </div>
 
-                  <div className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-xl font-black heading-glow tracking-tight">Mohammad Rehan</h3>
-                        <p className="text-blue-400 text-xs font-semibold mt-0.5">Cybersecurity · B.Tech CSE (2027)</p>
-                      </div>
-                      <span className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400">
-                        <Sparkles className="w-4 h-4" />
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 mt-4 px-3 py-1.5 rounded-lg bg-green-500/10 border border-green-500/20 w-fit">
-                      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                      <span className="text-green-300 text-xs font-bold">Available for Internships & SOC Roles</span>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-white/10">
-                      {["Nmap", "Wireshark", "Burp Suite", "Python", "OSINT", "Splunk"].map((s) => (
-                        <span
-                          key={s}
-                          className="text-[11px] font-semibold bg-blue-500/10 border border-blue-500/20 text-blue-300 px-2.5 py-1 rounded-full hover:bg-blue-500/20 transition-colors cursor-default"
-                        >
-                          {s}
-                        </span>
-                      ))}
+                  <div className={`p-6 ${theme === "dark" ? "bg-[#080d1a]" : "bg-white"}`}>
+                    <h3 className={`text-xl font-black tracking-tight ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Mohammad Rehan</h3>
+                    <p className={`mt-1 text-xs font-semibold ${theme === "dark" ? "text-cyan-200" : "text-blue-600"}`}>Cybersecurity · B.Tech CSE</p>
+                    <div className="mt-4 flex items-center gap-2 rounded-lg border border-green-300/30 bg-green-400/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-green-500">
+                      <span className="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.9)]" />
+                      Classified
                     </div>
                   </div>
                 </InteractiveCard>

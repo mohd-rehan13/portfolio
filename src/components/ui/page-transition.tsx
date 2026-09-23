@@ -100,7 +100,6 @@ export function InteractiveCard({
 
     const rX = ((y - centerY) / centerY) * -7;
     const rY = ((x - centerX) / centerX) * 7;
-
     setRotateX(rX);
     setRotateY(rY);
     setSpotlightPos({ x, y });

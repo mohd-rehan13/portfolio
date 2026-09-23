@@ -353,7 +353,7 @@ export const StaggerCarousel: React.FC<StaggerCarouselProps> = ({
       onTouchEnd={handleTouchEnd}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      className="relative w-full overflow-hidden flex items-center justify-center py-6 cursor-grab active:cursor-grabbing select-none"
+      className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden flex items-center justify-center py-6 cursor-grab active:cursor-grabbing select-none"
       style={{ height: containerHeight }}
     >
       {itemList.map((item, index) => {

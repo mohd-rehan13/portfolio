@@ -156,7 +156,7 @@ export function SmokeBackground() {
       raf = requestAnimationFrame(render);
     };
 
-    render();
+    raf = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(raf);
