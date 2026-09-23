@@ -23,11 +23,11 @@ interface ResumeModalProps {
 }
 
 const RESUME_DRIVE_VIEW_URL =
-  "https://drive.google.com/file/d/1KnDmkOXP5_hsoyhWoWiYjPfPDx0RqBIr/view?usp=sharing";
+  "https://drive.google.com/file/d/15IJakaGjz7NAZ0cXhL4y-lIMiNkvWu2G/view?usp=sharing";
 const RESUME_DRIVE_PREVIEW_URL =
-  "https://drive.google.com/file/d/1KnDmkOXP5_hsoyhWoWiYjPfPDx0RqBIr/preview";
+  "https://drive.google.com/file/d/15IJakaGjz7NAZ0cXhL4y-lIMiNkvWu2G/preview";
 const RESUME_DRIVE_DOWNLOAD_URL =
-  "https://drive.google.com/uc?export=download&id=1KnDmkOXP5_hsoyhWoWiYjPfPDx0RqBIr";
+  "https://drive.google.com/uc?export=download&id=15IJakaGjz7NAZ0cXhL4y-lIMiNkvWu2G";
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState<"pdf" | "dossier">("pdf");

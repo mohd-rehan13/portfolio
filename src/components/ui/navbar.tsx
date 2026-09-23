@@ -164,7 +164,7 @@ export function Navbar() {
 
               {/* Resume */}
               <a
-                href="https://drive.google.com/file/d/1KnDmkOXP5_hsoyhWoWiYjPfPDx0RqBIr/view?usp=sharing"
+                href="https://drive.google.com/file/d/15IJakaGjz7NAZ0cXhL4y-lIMiNkvWu2G/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 border border-blue-500/50 hover:shadow-[0_0_20px_rgba(70,115,235,0.4)] transition-all duration-200 cursor-none"
@@ -302,7 +302,7 @@ export function Navbar() {
               GitHub
             </a>
             <a
-              href="https://drive.google.com/file/d/1KnDmkOXP5_hsoyhWoWiYjPfPDx0RqBIr/view?usp=sharing"
+              href="https://drive.google.com/file/d/15IJakaGjz7NAZ0cXhL4y-lIMiNkvWu2G/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white bg-blue-600 border border-blue-500/50 transition-all duration-200 cursor-none"
